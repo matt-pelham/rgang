@@ -16,12 +16,9 @@ print(p1)
 p2 <- densityplot.defaultrate.over.tuition(unflattened_df)
 print(p2)
 
-
 p4 <- plot.default.rate.over.degree.and.tuition(unflattened_df) 
 print(p4)
 ggsave(filename = "defaultrate-degree-tuition.png", plot = p4, width = 6, height = 4, dpi = 600)
-
-
 
 generate.summary.tables(unflattened_df)
 
