@@ -1,7 +1,3 @@
-
-
-#Insert a blue full in the density plot
-
 library(dplyr)
 library(reshape2)
 library(ggplot2)
@@ -25,8 +21,8 @@ densityplot.default.over.tuition <- function(df){
 
 densityplot.defaultrate.over.tuition <- function(df){
   #Produces a summary table for default rates, based on  program length and cost of tuition. 
-
-
+  
+  
   df$Tuition_binned <- cut(df$Tuition, 10000*(0:5), labels = c("1-10000","10001-20000", "20001-30000", "30001-40000", "40001-50000"))
   df <- group_by(df, Tuition_binned, Prog.Length)
   sum_12_13 <- summarize(df, MeanDefault_12and13 = mean(CohortDefaultRate))
@@ -46,7 +42,7 @@ densityplot.defaultrate.over.tuition <- function(df){
   assign("rank.default.12and13",rank_dflt_12_13 ,envir = .GlobalEnv)
   
   df <- ungroup(df)
-
+  
   #P2   Produces a log scale which shows the default percentage compared against tuition binned.   Shows that as the tuiion goes up,
   # the defualt rates are less dense at the higher percentages.
   p <- qplot(CohortDefaultRate,  data = df, geom = "density", facets = . ~ Tuition_binned )
@@ -73,8 +69,8 @@ plot.default.rate.over.degree.and.tuition <- function(df){
   #lower default rates are associated with higher tuition rates along with Bachelor degrees and Master's Degrees.
   #Higher default rates are associated with lower tuition and associates degrees.
   df$Prog.Length <- as.factor(df$Prog.Length)
-  p <- qplot(Tuition, CohortDefaultRate, data = df, geom = "point", color= Prog.Meaning,
-            alpha= I(.50))
+  p <- qplot(Tuition, CohortDefaultRate, data = unflattened_df, geom = "point", color= Prog.Meaning,
+             alpha= I(.50))
   p <- p + ggtitle("Default Rate over Cost of Tuition")
   p <- p + scale_x_continuous(name = "Cost of Tuition",
                               breaks= 5000*(0:9), labels = dollar)
@@ -92,5 +88,4 @@ plot.default.rate.over.degree.and.tuition <- function(df){
   p <- p + theme(axis.text.x = element_text(angle = -90))
   p
 }  
-  
 
