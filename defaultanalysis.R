@@ -25,37 +25,8 @@ densityplot.default.over.tuition <- function(df){
 
 densityplot.defaultrate.over.tuition <- function(df){
   #Produces a summary table for default rates, based on  program length and cost of tuition. 
-  #Shows that:
-  # Prog length
-  # 3-Non-Degree 1 Year(900-1799 hours)  --> near the top of default list for all applicable bins
-  # 4-Non-Degree 2 Year(1800-2699 hours) --> appears at bottom and top of list (mixed)
-  # 5-Associates degree  --> highest default rate in 3 out of 5 tuition bins (close 2nd in two bins that it didn't lead)
-  # 6-Bachelor's degree  --> 3rd highest out of the 8 ffor default in 4 out of 5 bins
-  # 7-1st Profes Degree  --> lowest defualt rates among all tuition bins it appeared in
-  # 8-Master's degree  -->  near 2nd to lowest default rates across all bins
-  # 11-Non degree (3 years plus)  no clear pattern
-  # 12-two year transfer  --> minimal data, but on bottom half of bins where did occur
-  
-  
-  
 
-  #I am unable to call the df. It is listed in the functions as "df", however it is popping up in 
-  #my environemnt as full_df.  This is not allowing plot 2 or 4 to pull up when running the master
-  #script in the project
 
-  df$Prog.Length<- as.factor(df$Prog.Length)
-  df$Prog.Meaning< as.factor(df$Prog.Meaning)
-  df$Prog.Meaning <- NA
-  df$Prog.Meaning(df$Prog.Length == 3) <- "Non-Degree(1 yr)"
-  df$Prog.Meaning(df$Prog.Length == 4) <- "Non-Degree(2 yr)"
-  df$Prog.Meaning(df$Prog.Length == 5) <- "Associate's Degree"
-  df$Prog.Meaning(df$Prog.Length == 6) <- "Bachelor's Degree"
-  df$Prog.Meaning(df$Prog.Length == 7) <- "First Professional Degree"
-  df$Prog.Meaning(df$Prog.Length == 8) <- "Master's Degree"
-  df$Prog.Meaning(df$Prog.Length == 11) <- "Non-Degree(3 yr +)"
-  df$Prog.Meaning(df$Prog.Length == 12) <- "Two-Year Transfer"
-  
-  
   df$Tuition_binned <- cut(df$Tuition, 10000*(0:5), labels = c("1-10000","10001-20000", "20001-30000", "30001-40000", "40001-50000"))
   df <- group_by(df, Tuition_binned, Prog.Length)
   sum_12_13 <- summarize(df, MeanDefault_12and13 = mean(CohortDefaultRate))
@@ -78,7 +49,7 @@ densityplot.defaultrate.over.tuition <- function(df){
 
   #P2   Produces a log scale which shows the default percentage compared against tuition binned.   Shows that as the tuiion goes up,
   # the defualt rates are less dense at the higher percentages.
-  p<- qplot(CohortDefaultRate,  data = df, geom = "density", facets = . ~ Tuition_binned )
+  p <- qplot(CohortDefaultRate,  data = df, geom = "density", facets = . ~ Tuition_binned )
   p <- p + ggtitle("Density Plot of Default Rates for Binned Tuition Prices")
   p <- p + xlab("Default Rates")
   p <- p + theme(plot.title = element_text(face = "bold"))
@@ -101,8 +72,8 @@ plot.default.rate.over.degree.and.tuition <- function(df){
   #Shows that associates degrees have a higher default rate despite their lower tuition.   In conclusion
   #lower default rates are associated with higher tuition rates along with Bachelor degrees and Master's Degrees.
   #Higher default rates are associated with lower tuition and associates degrees.
-  df$Prog.Length<- as.factor(df$Prog.Length)
-  p<- qplot(Tuition, CohortDefaultRate, data = df, geom = "point", color= Prog.Meaning,
+  df$Prog.Length <- as.factor(df$Prog.Length)
+  p <- qplot(Tuition, CohortDefaultRate, data = df, geom = "point", color= Prog.Meaning,
             alpha= I(.50))
   p <- p + ggtitle("Default Rate over Cost of Tuition")
   p <- p + scale_x_continuous(name = "Cost of Tuition",

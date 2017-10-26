@@ -99,6 +99,21 @@ load.data <- function(){
   
   full_df$School.Type<- factor(full_df$School.Type) 
   
+  
+  full_df$Prog.Meaning <- as.factor(full_df$Prog.Length)
+  #Change the levels of program meaning to match the length
+
+  # Prog length
+  # 3-Non-Degree 1 Year(900-1799 hours)  --> near the top of default list for all applicable bins
+  # 4-Non-Degree 2 Year(1800-2699 hours) --> appears at bottom and top of list (mixed)
+  # 5-Associates degree  --> highest default rate in 3 out of 5 tuition bins (close 2nd in two bins that it didn't lead)
+  # 6-Bachelor's degree  --> 3rd highest out of the 8 ffor default in 4 out of 5 bins
+  # 7-1st Profes Degree  --> lowest defualt rates among all tuition bins it appeared in
+  # 8-Master's degree  -->  near 2nd to lowest default rates across all bins
+  # 11-Non degree (3 years plus)  no clear pattern
+  # 12-two year transfer  --> minimal data, but on bottom half of bins where did occur
+  levels(full_df$Prog.Meaning) <- c("Not Sure","Non-Degree(1 yr)","Non-Degree(2 yr)","Associate's Degree","Bachelor's Degree","First Professional Degree","Master's Degree","Non-Degree(3 yr +)","Two-Year Transfer")
+  
   full_df
   
 }
