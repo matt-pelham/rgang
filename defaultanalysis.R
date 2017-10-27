@@ -23,22 +23,20 @@ densityplot.defaultrate.over.tuition <- function(df){
   #Produces a summary table for default rates, based on  program length and cost of tuition. 
   
   
-  df$Tuition_binned <- cut(df$Tuition, 10000*(0:5), labels = c("1-10000","10001-20000", "20001-30000", "30001-40000", "40001-50000"))
-  df <- group_by(df, Tuition_binned, Prog.Length)
+  df$Tuition_binned <- cut(df$Tuition, 10000*(0:5), labels = c("$1-$10,000","$10,001-$20,000", "$20,001-$30,000", "$30,001-$40,000", "$40,001-$50,000"))
+  df <- group_by(df, Tuition_binned, Prog.Meaning)
   sum_12_13 <- summarize(df, MeanDefault_12and13 = mean(CohortDefaultRate))
-  Mean_dflt_12_13 <- dcast(sum_12_13, Prog.Length ~ Tuition_binned, value.var = "MeanDefault_12and13")
+  Mean_dflt_12_13 <- dcast(sum_12_13, Prog.Meaning ~ Tuition_binned, value.var = "MeanDefault_12and13")
   assign("mean.default.12and13",Mean_dflt_12_13,envir = .GlobalEnv)
   
   
   #create a table that shows the rankings of the default rates from the mean default rates
   rank_dflt_12_13 <- mean.default.12and13 #Mean_dflt_12_13
-  rank_dflt_12_13$`1-10000` <- rank(rank_dflt_12_13$`1-10000`)
-  rank_dflt_12_13$`10001-20000` <- rank(rank_dflt_12_13$`10001-20000`, na.last = "keep")
-  rank_dflt_12_13$`20001-30000` <- rank(rank_dflt_12_13$`20001-30000`,na.last = "keep")
-  rank_dflt_12_13$`30001-40000` <- rank(rank_dflt_12_13$`30001-40000`,na.last = "keep")
-  rank_dflt_12_13$`40001-50000` <- rank(rank_dflt_12_13$`40001-50000`,na.last = "keep")
-  #rank_dflt_12_13$`50001-60000` <- rank(rank_dflt_12_13$`50001-60000`)
-  #rank_dflt_12_13$`60001-70000` <- rank(rank_dflt_12_13$`60001-70000`,na.last = "keep")
+  rank_dflt_12_13$`$1-$10,000` <- rank(rank_dflt_12_13$`$1-$10,000`)
+  rank_dflt_12_13$`$10,001-$20,000` <- rank(rank_dflt_12_13$`$10,001-$20,000`, na.last = "keep")
+  rank_dflt_12_13$`$20,001-$30,000` <- rank(rank_dflt_12_13$`$20,001-$30,000`,na.last = "keep")
+  rank_dflt_12_13$`$30,001-$40,000` <- rank(rank_dflt_12_13$`$30,001-$40,000`,na.last = "keep")
+  rank_dflt_12_13$`$40,001-$50,000` <- rank(rank_dflt_12_13$`$40,001-$50,000`,na.last = "keep")
   assign("rank.default.12and13",rank_dflt_12_13 ,envir = .GlobalEnv)
   
   df <- ungroup(df)
@@ -68,7 +66,7 @@ plot.default.rate.over.degree.and.tuition <- function(df){
   #Shows that associates degrees have a higher default rate despite their lower tuition.   In conclusion
   #lower default rates are associated with higher tuition rates along with Bachelor degrees and Master's Degrees.
   #Higher default rates are associated with lower tuition and associates degrees.
-  df$Prog.Length <- as.factor(df$Prog.Length)
+
   p <- qplot(Tuition, CohortDefaultRate, data = unflattened_df, geom = "point", color= Prog.Meaning,
              alpha= I(.50))
   p <- p + ggtitle("Default Rate over Cost of Tuition")
