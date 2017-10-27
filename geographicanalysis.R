@@ -63,11 +63,16 @@ generate.choropleth.maps <- function(df, state=NA){
         gg1 
         
     }else{
+        state <- toupper(state)
         # There was a state provided, so let's limit our information to just the state and do the same
         # process for creating a plot
         #TODO: Handle an error if the state code provided is not in the data set, or is AK or HI
         data("state.regions")#Load the state data set to get the region name
-        region <- subset(state.regions,abb == toupper(state))[1,c("region")]
+        if(state == "AK" || state == "HI" || nrow(subset(state.regions,abb == state)) == 0){
+          err <- "Invalid state provided.  Please provide a valid 2 character state abbreviation for one of the contiguous 48 states."
+          stop(err)
+        }
+        region <- subset(state.regions,abb == state)[1,c("region")]
         dfs_state <- subset(df_subset, State == state)
         stateMAP <- map_data("state", region = region)
         gstate <- ggplot(dfs_state, aes(LONGITUD, LATITUDE)) + 

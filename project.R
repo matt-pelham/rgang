@@ -29,8 +29,19 @@ ggsave(filename = "Ben1.png", plot = p5, width = 6, height = 4, dpi = 600)
 p6 <- plot.default.over.tuition.typefacet(unflattened_df)
 ggsave(filename = "Ben2.png", plot = p6, width = 7, height = 4, dpi = 600)
 
+
+#An error handler function to use in conjunction with mapping state default rates
+my.state.map.error.handler <- function(error){
+  msg <- sprintf("Error generating state default rate plot.  Generating full map.")
+  message(paste(msg,error," "))
+  map <- generate.choropleth.maps(unflattened_df)
+  map
+}
+
+#Call the map function with no state to get the entire map
 map <- generate.choropleth.maps(unflattened_df)
 print(map)
 
-mapIA <- generate.choropleth.maps(unflattened_df,"IA")
-print(mapIA)
+#Call the map function wrapped in a try catch in case the state provided is invalid
+result <- tryCatch(generate.choropleth.maps(unflattened_df,"IA"), error = my.state.map.error.handler)
+print(result)
