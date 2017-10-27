@@ -31,3 +31,6 @@ ggsave(filename = "Ben2.png", plot = p6, width = 7, height = 4, dpi = 600)
 
 map <- generate.choropleth.maps(unflattened_df)
 print(map)
+
+mapIA <- generate.choropleth.maps(unflattened_df,"IA")
+print(mapIA)
