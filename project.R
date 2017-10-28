@@ -24,10 +24,10 @@ generate.summary.tables(unflattened_df)
 
 p5 <- plot.default.over.tuition(unflattened_df)
 print(p5)
-ggsave(filename = "Ben1.png", plot = p5, width = 6, height = 4, dpi = 600)
+ggsave(filename = "defaultrate-tuition-schooltype.png", plot = p5, width = 6, height = 4, dpi = 600)
 
 p6 <- plot.default.over.tuition.typefacet(unflattened_df)
-ggsave(filename = "Ben2.png", plot = p6, width = 7, height = 4, dpi = 600)
+ggsave(filename = "defaultrate-over-schooltype.png", plot = p6, width = 7, height = 4, dpi = 600)
 
 
 #An error handler function to use in conjunction with mapping state default rates
