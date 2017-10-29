@@ -1,4 +1,3 @@
-
 rm(list = ls())
 #Source the file containing the functions that load and parse the data
 source("dataload.R")
@@ -12,9 +11,12 @@ unflattened_df <- unflatten.data(full_df)
 
 p1 <- densityplot.default.over.tuition(unflattened_df)
 print(p1)
+ggsave(filename = "densityplot.default.over.tuition.png", plot = p1, width = 6, height = 4, dpi = 600)
 
 p2 <- densityplot.defaultrate.over.tuition(unflattened_df)
 print(p2)
+ggsave(filename = "densityplot.defaultrate.over.tuition2.png", plot = p2, width = 6, height = 4, dpi = 600)
+
 
 p4 <- plot.default.rate.over.degree.and.tuition(unflattened_df) 
 print(p4)
@@ -45,3 +47,5 @@ print(map)
 #Call the map function wrapped in a try catch in case the state provided is invalid
 result <- tryCatch(generate.choropleth.maps(unflattened_df,"IA"), error = my.state.map.error.handler)
 print(result)
+
+
