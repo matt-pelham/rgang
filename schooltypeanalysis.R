@@ -5,6 +5,10 @@ library(scales)
 
 generate.summary.tables <- function(df){
    
+  levels(df$School.Type)[levels(df$School.Type) == "1"] <- "Public"
+  levels(df$School.Type)[levels(df$School.Type) == "2"] <- "Private"
+  levels(df$School.Type)[levels(df$School.Type) == "3"] <- "Proprietary"
+ 
   df <-group_by(df, School.Type, Year)
   df_s <- summarize(df, avg_default = mean(CohortDefaultRate))
   df_st <-dcast(df_s, School.Type ~ Year, value.var = "avg_default")
