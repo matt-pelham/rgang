@@ -9,6 +9,11 @@ generate.summary.tables <- function(df){
   levels(df$School.Type)[levels(df$School.Type) == "2"] <- "Private"
   levels(df$School.Type)[levels(df$School.Type) == "3"] <- "Proprietary"
  
+  # After joining together our datasets and sifting through out incomplete obervations, we were left with just three levels of our
+  # School.Type variable among our complete cases. To produce analysis that was easier to comprehend, I decided to just rename levels
+  # to their categorical values contained in our datakey. The nubering system used by the department of education seemed to be of little
+  # value for our purposes. 
+
   df <-group_by(df, School.Type, Year)
   df_s <- summarize(df, avg_default = mean(CohortDefaultRate))
   df_st <-dcast(df_s, School.Type ~ Year, value.var = "avg_default")
@@ -19,7 +24,6 @@ generate.summary.tables <- function(df){
   # 2012 and 2013. Private-Non Profit Colleges and Universities had the lowest deafult rates-
   # almost half that of it Public and Proprietary counterparts. This summary table alone
   # shows that private institutions outpace their counterparts as it relates to default rate.
-  
   
   df1 <-group_by(df, School.Type, Year)
   df_s1 <- summarize(df1, perc_default = sum(CohortDefaultRate <= 15)/n())
@@ -36,13 +40,11 @@ generate.summary.tables <- function(df){
   # Public schools rates for this metric decreased from 2012 to 2013. The percentage of Proprietary schools meeting this benchmark 
   # increased from year 2012 to 2013. 
   
-  
   df2 <-group_by(df, School.Type, Year)
   df_s2 <- summarize(df2, perc_default = sum(CohortDefaultRate >=30)/n())
   df_st2 <- dcast(df_s2, School.Type ~ Year, value.var = "perc_default")
   
   assign("summary.percent.default30",df_st2,envir = .GlobalEnv)
-  
   
   
   # The summary table above captures the percentage of each school type that is 'at-risk' of losing eligibility 
