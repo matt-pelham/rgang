@@ -4,16 +4,7 @@ library(ggplot2)
 library(scales)
 
 generate.summary.tables <- function(df){
-  levels(df$School.Type)[levels(df$School.Type) == "1"] <- "Public"
-  levels(df$School.Type)[levels(df$School.Type) == "2"] <- "Private"
-  levels(df$School.Type)[levels(df$School.Type) == "3"] <- "Proprietary"
-  
-  # After joining together our datasets and sifting through out incomplete obervations, we were left with just three levels of our
-  # School.Type variable among our complete cases. To produce analysis that was easier to comprehend, I decided to just rename levels
-  # to their categorical values contained in our datakey. The nubering system used by the department of education seemed to be of little
-  # value for our purposes. 
-  
-  
+   
   df <-group_by(df, School.Type, Year)
   df_s <- summarize(df, avg_default = mean(CohortDefaultRate))
   df_st <-dcast(df_s, School.Type ~ Year, value.var = "avg_default")
