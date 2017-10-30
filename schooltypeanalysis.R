@@ -75,7 +75,7 @@ plot.default.over.tuition.typefacet <- function(df){
   bp <- qplot(School.Meaning, CohortDefaultRate, data = df, geom = "boxplot") + geom_jitter(alpha = I(.10))
   bp <- bp + xlab("School Type")
   bp <- bp + ylab("Default Rate (Percentage)")
-  bp <- bp + ggtitle("Boxplot Distribution: Student Loan Default Rate vs. School Type (2012 -2013)")
+  bp <- bp + ggtitle("Boxplot Distribution: Student Loan Default Rate vs. School Type (2012 - 2013)")
   bp <- bp + theme(plot.title = element_text(size = 12, face = "bold"))
   bp <- bp + theme(axis.title = element_text(size = 12, face = "bold"))
   bp 
