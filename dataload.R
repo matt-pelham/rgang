@@ -104,7 +104,7 @@ load.data <- function(){
   levels(full_df$Prog.Meaning) <- c("Non-Degree (<1 yr)","Non-Degree(1 yr)","Non-Degree(2 yr)","Associate's Degree","Bachelor's Degree","First Professional Degree","Master's Degree","Non-Degree(3 yr +)","Two-Year Transfer")
   
   full_df$School.Meaning <- as.factor(full_df$School.Type)
-  levels(full_df$Meaning) <- c("Public","Private","Proprietary")
+  levels(full_df$School.Meaning) <- c("Public","Private","Proprietary")
   full_df
   
 }
