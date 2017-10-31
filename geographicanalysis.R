@@ -6,7 +6,8 @@ suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(ggplot2))
 
 # Reduce the number of columns 
-generate.choropleth.maps <- function(df, state=NA){
+generate.choropleth.maps <- function(df, state=NA, mapyear = "2013")
+  {
   
     # Reduce the number of columns to just a subset to allow for faster
     # processing of data
@@ -16,12 +17,21 @@ generate.choropleth.maps <- function(df, state=NA){
     # Create the new dataframe
     df_subset <- df[,rlist]
     
+    # To create a better subset of data, we will look at default rates greater
+    # than 5%
+    df_subset <- subset(df_subset, CohortDefaultRate > 5)
+    
+    # Reduce the values graphed by year.  If no year is specified, 
+    # default to 2013 (latest year of data available)
+    df_subset <- subset(df_subset, Year = mapyear)
+    
     # To better guide the color scale, adjusted the midpoint of the color 
-    # pallette to the median of the defaul rates.  This allows for a better 
+    # pallette to the mean of the defaul rates.  This allows for a better 
     # overall color spread.  USavgdef will be used as midpoint in the gradient 
     # scale below
     
-    USavgdef <- median(df_subset$CohortDefaultRate)
+    USavgdef <- mean(df_subset$CohortDefaultRate)
+    
     
     if(is.na(state)){
         # Select the map outline to be used.  This uses the US map with an outline
@@ -48,11 +58,11 @@ generate.choropleth.maps <- function(df, state=NA){
             geom_polygon(data = usa, aes(x=long, y = lat, group = group), 
                          fill = "white", color = "blue") + coord_fixed() +
             geom_point(aes(color = CohortDefaultRate), size = 1.3) + 
-            scale_color_gradient2(name = "Default Rate", low = "orange", 
+            scale_color_gradient2(name = "Default Rate %", low = "orange", 
                                   mid = "light blue", high = "black", midpoint = USavgdef)
         
-        gg1 <- gg1 + ggtitle("Loan Default Rates Across the US") +
-            theme(plot.title = element_text(size = 16))
+        gg1 <- gg1 + ggtitle(paste("Loan Default Rates Across the US in ", mapyear, sep = "" )) +
+            theme(plot.title = element_text(size = 12, face = "bold"))
         gg1 <- gg1 + theme(legend.text = element_text(size = 8))
         gg1 <- gg1 + theme(legend.key.size = unit(0.12, "in"))
         gg1 <- gg1 + theme(panel.border = element_blank())
@@ -79,12 +89,12 @@ generate.choropleth.maps <- function(df, state=NA){
             geom_polygon(data = stateMAP, aes(x=long, y = lat, group = group), 
                          fill = "white", color = "blue") + coord_fixed() +
             geom_point(aes(color = CohortDefaultRate), size = 2) + 
-            scale_color_gradient2(name = "Default Rate", low = "orange", 
+            scale_color_gradient2(name = "Default Rate %", low = "orange", 
                                   mid = "light blue", high = "black", midpoint = USavgdef)
         #Capitalize the region name appropriately and write it in the title
-        title <- paste0("Loan Default Rates Across ",capitalState(region))
+        title <- paste0("Loan Default Rates Across ",capitalState(region), " in ", mapyear)
         gstate<- gstate + ggtitle(title) +
-            theme(plot.title = element_text(size = 16))
+          theme(plot.title = element_text(size = 12, face = "bold"))
         gstate <- gstate + theme(legend.text = element_text(size = 8))
         gstate <- gstate + theme(legend.key.size = unit(0.12, "in"))
         gstate <- gstate + theme(panel.border = element_blank())
