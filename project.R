@@ -42,10 +42,10 @@ my.state.map.error.handler <- function(error){
 
 #Call the map function with no state to get the entire map
 map <- generate.choropleth.maps(unflattened_df)
+ggsave(filename = "defaulrate-across-location.png", plot = map, width = 8, height = 6, dpi = 600)
 print(map)
 
 #Call the map function wrapped in a try catch in case the state provided is invalid
-#You can change the value of the state parameter to anything to test.  Using IA is just an example.
-result <- tryCatch(generate.choropleth.maps(unflattened_df,state = 'RI'), error = my.state.map.error.handler)
+result <- tryCatch(generate.choropleth.maps(unflattened_df,"IA"), error = my.state.map.error.handler)
 print(result)
 
