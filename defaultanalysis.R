@@ -11,7 +11,7 @@ densityplot.default.over.tuition <- function(df){
   #P1   Density plot to show that lower tuition rates have a higher default rate
   p <- qplot(Tuition,NumInDefault , data = df, geom = "bin2d")
   p <- p + scale_fill_gradient(name = "Frequency", low = "blue", high = "red")
-  p <- p + ggtitle("Number of Students In Default vs. Cost of Tuition (2012 - 2103) ") 
+  p <- p + ggtitle("Number of Students In Default vs. Cost of Tuition (2012 - 2013) ") 
   p <- p + xlab("Cost of Tuition ")
   p<- p + ylab("Number in Default")
   p
@@ -69,7 +69,7 @@ plot.default.rate.over.degree.and.tuition <- function(df){
   
   p <- qplot(Tuition, CohortDefaultRate, data = unflattened_df, geom = "point", color= Prog.Meaning,
              alpha= I(.50))
-  p <- p + ggtitle("Student Loan Default Rate v. Cost of Tuition (2012 - 2013")
+  p <- p + ggtitle("Student Loan Default Rate v. Cost of Tuition (2012 - 2013)")
   p <- p + scale_x_continuous(name = "Cost of Tuition (in U.S. Dollars)",
                               breaks= 5000*(0:9), labels = dollar)
   p <- p + scale_y_continuous(name = "Default Rate (Percentage)")
@@ -87,11 +87,11 @@ plot.default.rate.over.degree.and.tuition <- function(df){
   p <- p + scale_color_manual(name = "Program Length", values=c(
                                         "blue",
                                         "maroon",
-                                        "light blue",
-                                        "orange",
                                         "purple",
+                                        "light blue",
                                         "black",
                                         "dark gray",
+                                        "orange",
                                         "purple",
                                         "green"))
 
