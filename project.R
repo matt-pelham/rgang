@@ -1,3 +1,7 @@
+
+#The openxlsx package is required to perform the data loads.  Uncomment and run the following line to install
+#install.packages("openxlsx")
+
 rm(list = ls())
 #Source the file coxntaining the functions that load and parse the data
 source("dataload.R")
@@ -46,6 +50,6 @@ ggsave(filename = "defaulrate-across-location.png", plot = map, width = 8, heigh
 print(map)
 
 #Call the map function wrapped in a try catch in case the state provided is invalid
-result <- tryCatch(generate.choropleth.maps(unflattened_df,"IA"), error = my.state.map.error.handler)
+result <- tryCatch(generate.choropleth.maps(unflattened_df,"AL", mapyear = 2012), error = my.state.map.error.handler)
 print(result)
 
