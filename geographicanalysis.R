@@ -1,3 +1,11 @@
+# The geographicanalysis function is a program that will create
+# either a US plot or state plot showing the level of post-secondary school
+# loan default rates based on location.  The function can take up to 3 values, the df value 
+# which specifies the dataframe to use. A state value can optionally be passed in 
+# if you want to reduce the graphic to a single state.  It is expected the state value 
+# passed in is a 2 digit state.  The final value is mapyear.  Mapyear can be either 2012 or
+# 2013.  The default value if no mapyear is provided is 2013.
+# Last update:  10/30/17
 
 # Load packages
 suppressPackageStartupMessages(library(choroplethr))
@@ -6,33 +14,32 @@ suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(ggplot2))
 
 # Reduce the number of columns 
-generate.choropleth.maps <- function(df, state=NA, mapyear = 2013)
+generate.choropleth.maps <- function(df, state=NA, mapyear = "2013")
   {
   
     # Reduce the number of columns to just a subset to allow for faster
     # processing of data
     rlist <- c("Unit.ID", "City", "State", "CohortDefaultRate", 
-               "LONGITUD", "LATITUDE")
+               "LONGITUD", "LATITUDE", "Year")
     
     # Create the new dataframe
     df_subset <- df[,rlist]
     
+    # To create a better subset of data, we will look at default rates greater
+    # than 5%
+    df_subset <- subset(df_subset, CohortDefaultRate > 5)
+    
     # Reduce the values graphed by year.  If no year is specified, 
     # default to 2013 (latest year of data available)
-    if(mapyear != 2012 && mapyear != 2013){
-      msg <- sprintf("The mapyear parameter should be 2012 or 2013 only.  Defaulting to 2013. ")
-      message(msg)
-      mapyear <- 2013
-    }
-    df_subset <- subset(df_subset, Year = mapyear)
+    df_subset <- subset(df_subset, Year == mapyear)
     
     # To better guide the color scale, adjusted the midpoint of the color 
     # pallette to the mean of the defaul rates.  This allows for a better 
     # overall color spread.  USavgdef will be used as midpoint in the gradient 
     # scale below
     
-    USavgdef <- mean(df_subset$CohortDefaultRate)
-    
+    USavgdef <- log(mean(df_subset$CohortDefaultRate))
+#    USavgdef <- mean(df_subset$CohortDefaultRate)
     
     if(is.na(state)){
         # Select the map outline to be used.  This uses the US map with an outline
@@ -58,10 +65,13 @@ generate.choropleth.maps <- function(df, state=NA, mapyear = 2013)
         gg1 <- ggplot(df_subset, aes(LONGITUD, LATITUDE)) + 
             geom_polygon(data = usa, aes(x=long, y = lat, group = group), 
                          fill = "white", color = "blue") + coord_fixed() +
-            geom_point(aes(color = CohortDefaultRate), size = 1.3) + 
+            geom_point(aes(color = CohortDefaultRate), size = 1) + 
             scale_color_gradient2(name = "Default Rate %", low = "orange", 
-                                  mid = "light blue", high = "black", midpoint = USavgdef)
-        
+#                                  mid = "light blue", high = "black", midpoint = USavgdef) 
+                                  mid = "light blue", high = "black", midpoint = USavgdef, 
+                                  trans = "log", breaks = c(10,15,20,30)) 
+#                scale_size(trans="log10", breaks = c(0,10, 15,20, 25, 30))
+
         gg1 <- gg1 + ggtitle(paste("Loan Default Rates Across the US in ", mapyear, sep = "" )) +
             theme(plot.title = element_text(size = 12, face = "bold"))
         gg1 <- gg1 + theme(legend.text = element_text(size = 8))
@@ -91,7 +101,9 @@ generate.choropleth.maps <- function(df, state=NA, mapyear = 2013)
                          fill = "white", color = "blue") + coord_fixed() +
             geom_point(aes(color = CohortDefaultRate), size = 2) + 
             scale_color_gradient2(name = "Default Rate %", low = "orange", 
-                                  mid = "light blue", high = "black", midpoint = USavgdef)
+                                  mid = "light blue", high = "black", midpoint = USavgdef, 
+                                  trans = "log", breaks = c(10,15,20,30))  
+#                                 mid = "light blue", high = "black", midpoint = USavgdef)
         #Capitalize the region name appropriately and write it in the title
         title <- paste0("Loan Default Rates Across ",capitalState(region), " in ", mapyear)
         gstate<- gstate + ggtitle(title) +
