@@ -14,7 +14,7 @@ suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(ggplot2))
 
 # Reduce the number of columns 
-generate.choropleth.maps <- function(df, state=NA, mapyear = "2013")
+generate.choropleth.maps <- function(df, state=NA, mapyear = 2013)
   {
   
     # Reduce the number of columns to just a subset to allow for faster
@@ -31,6 +31,14 @@ generate.choropleth.maps <- function(df, state=NA, mapyear = "2013")
     
     # Reduce the values graphed by year.  If no year is specified, 
     # default to 2013 (latest year of data available)
+    # Reduce the values graphed by year.  If no year is specified, 
+    # default to 2013 (latest year of data available)
+    if(mapyear != 2012 && mapyear != 2013){
+      msg <- sprintf("The mapyear parameter should be 2012 or 2013 only.  Defaulting to 2013. ")
+      message(msg)
+      mapyear <- 2013
+    }
+    
     df_subset <- subset(df_subset, Year == mapyear)
     
     # To better guide the color scale, adjusted the midpoint of the color 

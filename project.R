@@ -46,10 +46,11 @@ my.state.map.error.handler <- function(error){
 
 #Call the map function with no state to get the entire map
 map <- generate.choropleth.maps(unflattened_df)
-ggsave(filename = "defaulrate-across-location.png", plot = map, width = 8, height = 6, dpi = 600)
+ggsave(filename = "defaultrate-across-location-2013.png", plot = map, width = 8, height = 6, dpi = 600)
 print(map)
 
 #Call the map function wrapped in a try catch in case the state provided is invalid
-result <- tryCatch(generate.choropleth.maps(unflattened_df,"AL", mapyear = 2012), error = my.state.map.error.handler)
+result <- tryCatch(generate.choropleth.maps(unflattened_df,"IA", mapyear = 2013), error = my.state.map.error.handler)
+ggsave(filename = "defaultrate-across-Iowa-2013.png", plot = result, width = 8, height = 6, dpi = 600)
 print(result)
 
