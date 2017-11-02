@@ -13,7 +13,7 @@ densityplot.default.over.tuition <- function(df){
   p <- p + scale_fill_gradient(name = "Frequency", low = "blue", high = "red")
   p <- p + ggtitle("Number of Students In Default vs. Cost of Tuition (2012 - 2013) ") 
   p <- p + xlab("Cost of Tuition ")
-  p<- p + ylab("Number in Default" )
+  p<- p + ylab("Total Number of Students in Default" )
   #p<- p + scale_y_log10(name = "Number in Default")
   p
   
@@ -99,28 +99,3 @@ plot.default.rate.over.degree.and.tuition <- function(df){
   p
 } 
 
-# ("Non-Degree(1 yr)",
-#   "Non-Degree(1 yr)",
-#   "Non-Degree(2 yr)",
-#   "Associate's Degree",
-#   "Bachelor's Degree",
-#   "Master's Degree",
-#   "Master's Degree",
-#   "Non-Degree(3 yr +)",
-#   "Bachelor's Degree")
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# # df<- subset(unflattened_df, Prog.Meaning == "Master's Degree")
-# # df2<- subset(unflattened_df, Prog.Meaning == "First Professional Degree")
-# #df3<- subset(unflattened_df, Prog.Meaning == "Non-Degree(3 yr +)")
-# 
-# 
-# 
-# 
-# #Two-Year Transfer
-# #First Professional Degree
