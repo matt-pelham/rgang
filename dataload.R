@@ -24,8 +24,6 @@ load.data <- function(){
   #The file with OPEID to UnitID mappings has duplicate OPEID values in it, most likely because of multiple sites per institution.
   #Sometimes an OPEID has multiple UNITIDs associated with it, but sometimes the OPEID is repeated with the same UNIT ID multiple times.
   #Remove the records that have duplicate combinations of OPEID and UNITID, as they will only represent duplicate cases in our analysis. 
-  #OPEID 1054600 is an example of an institution in the OPEID.csv file that is listed multiple times with the same UNITID.
-  #OPEID 109000 is an example of an institution in the OPEID.csv file that is listed multiple times with different UNITIDs.
   codes_peps300 <- codes_peps300[!duplicated(codes_peps300[1:2]),]
   
   latlong <- read.xlsx("IPEDS full dataset.xlsx", sheet = 4)
